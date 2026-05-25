@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentacation — Curated Vacation Fashion</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italiana&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --hot-pink: #FF2D87; --deep-pink: #E0006A; --coral: #FF6B35;
+  --orange: #FF9500; --golden: #FFD23F; --blush: #FFB3D1;
+  --light-pink: #FFE4F0; --cream: #FFF8F0;
+  --dark: #1A0A14; --dark-mid: #2D0F20; --text-mid: #6B2048; --white: #FFFFFF;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; }
+
+.blob-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18; animation: blobFloat 12s ease-in-out infinite; }
+.blob-1 { width: 600px; height: 600px; background: var(--hot-pink); top: -200px; right: -100px; }
+.blob-2 { width: 500px; height: 500px; background: var(--orange); bottom: 10%; left: -150px; animation-delay: -4s; }
+.blob-3 { width: 400px; height: 400px; background: var(--coral); top: 40%; right: 10%; animation-delay: -8s; }
+@keyframes blobFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(20px,-30px) scale(1.05); }
+  66% { transform: translate(-15px,20px) scale(0.95); }
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 3.5rem;
+  background: rgba(255,248,240,0.88); backdrop-filter: blur(16px);
+  border-bottom: 1.5px solid rgba(255,45,135,0.15);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.05em;
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--hot-pink), var(--coral), var(--orange));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-mid); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--hot-pink); }
+.nav-cta {
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--white); text-decoration: none;
+  background: linear-gradient(135deg, var(--hot-pink), var(--coral));
+  padding: 0.65rem 1.6rem; border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(255,45,135,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,45,135,0.45); }
+
+/* PAGE MARKERS */
+.page-marker {
+  display: flex; justify-content: center; padding: 4rem 0 0;
+}
+.page-marker span {
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase;
+  background: linear-gradient(135deg, var(--hot-pink), var(--coral));
+  color: white; padding: 0.45rem 1.8rem; border-radius: 100px;
+}
+
+/* SHARED */
+.section-label {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--hot-pink); display: block; margin-bottom: 1rem;
+}
+.section-h2 {
+  font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem,5vw,4rem);
+  letter-spacing: 0.04em; color: var(--dark); line-height: 1; margin-bottom: 1rem;
+}
+.section-h2 .grad {
+  background: linear-gradient(90deg, var(--hot-pink), var(--coral));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.btn-main {
+  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--hot-pink) 0%, var(--coral) 60%, var(--orange) 100%);
+  padding: 1rem 2.5rem; border-radius: 100px; text-decoration: none;
+  box-shadow: 0 6px 30px rgba(255,45,135,0.4);
+  display: inline-block; transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-main:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(255,45,135,0.5); }
+.btn-ghost {
+  font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--hot-pink); background: transparent;
+  border: 1.5px solid var(--hot-pink); padding: 1rem 2.5rem; border-radius: 100px;
+  text-decoration: none; display: inline-block; transition: all 0.2s;
+}
+.btn-ghost:hover { background: var(--hot-pink); color: white; }
+
+/* ═══ PAGE 1: HERO ═══ */
+#home {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 7rem 2rem 4rem;
+}
+.hero-inner { max-width: 860px; }
+.hero-eyebrow {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--hot-pink); margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+}
+.hero-eyebrow::before,.hero-eyebrow::after {
+  content:''; width:2.5rem; height:1.5px;
+  background: linear-gradient(90deg, var(--hot-pink), var(--coral));
+}
+.hero-h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem,12vw,10rem); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 0.5rem;
+}
+.hero-h1 .plain { color: var(--dark); }
+.hero-h1 .grad {
+  background: linear-gradient(90deg, var(--hot-pink) 0%, var(--coral) 50%, var(--orange) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: block;
+}
+.hero-sub {
+  font-family: 'Italiana', serif; font-size: clamp(1rem,2.2vw,1.4rem); font-style: italic;
+  color: var(--text-mid); margin: 1.5rem auto 2.8rem; max-width: 560px; line-height: 1.65;
+}
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* MISSION / VISION */
+.mv-strip { display: grid; grid-template-columns: 1fr 1fr; background: linear-gradient(135deg, var(--dark), var(--dark-mid)); }
+.mv-card { padding: 3.5rem 4rem; position: relative; overflow: hidden; }
+.mv-card:first-child { border-right: 1px solid rgba(255,45,135,0.2); }
+.mv-card::before { content:''; position:absolute; border-radius:50%; opacity:0.12; }
+.mv-card:first-child::before { width:300px; height:300px; background:var(--hot-pink); top:-80px; right:-80px; }
+.mv-card:last-child::before { width:280px; height:280px; background:var(--orange); bottom:-80px; left:-80px; }
+.mv-label { font-size:0.7rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; margin-bottom:1rem; display:block; }
+.mv-card:first-child .mv-label { color:var(--blush); }
+.mv-card:last-child .mv-label { color:var(--orange); }
+.mv-heading { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.06em; margin-bottom:1rem; }
+.mv-card:first-child .mv-heading { color:var(--hot-pink); }
+.mv-card:last-child .mv-heading { color:var(--orange); }
+.mv-body { font-family:'Italiana',serif; font-size:1.1rem; font-style:italic; color:rgba(255,248,240,0.8); line-height:1.7; }
+
+/* HOW IT WORKS */
+.how-section { padding: 6rem 3rem; text-align: center; }
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; max-width: 1000px; margin: 0 auto; }
+.step {
+  padding: 2.5rem 2rem; background: var(--white); border-radius: 24px;
+  border: 1.5px solid rgba(255,45,135,0.1);
+  transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden;
+}
+.step:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(255,45,135,0.12); }
+.step::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--hot-pink),var(--coral),var(--orange)); }
+.step-num {
+  font-family:'Bebas Neue',sans-serif; font-size:3.5rem;
+  background:linear-gradient(135deg,var(--hot-pink),var(--orange));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  line-height:1; margin-bottom:1rem;
+}
+.step-title { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.05em; color:var(--dark); margin-bottom:0.8rem; }
+.step-body { font-size:0.95rem; line-height:1.65; color:var(--text-mid); text-align:left; }
+
+/* ═══ PAGE 2: SERVICES ═══ */
+#services { padding: 6rem 3rem; }
+.services-header { max-width: 620px; margin-bottom: 4rem; }
+.services-header p { font-family:'Italiana',serif; font-size:1.1rem; font-style:italic; color:var(--text-mid); margin-top:1rem; line-height:1.7; }
+
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:1100px; margin:0 auto 3rem; }
+.plan { border-radius:28px; padding:3rem 2.5rem; position:relative; overflow:hidden; transition:transform 0.25s,box-shadow 0.25s; }
+.plan:hover { transform:translateY(-8px); }
+
+.plan-platinum { background:var(--white); border:2px solid rgba(255,45,135,0.2); }
+.plan-platinum:hover { box-shadow:0 24px 60px rgba(255,45,135,0.15); }
+.plan-premium { background:linear-gradient(145deg,var(--hot-pink) 0%,var(--coral) 55%,var(--orange) 100%); transform:scale(1.03); }
+.plan-premium:hover { transform:scale(1.03) translateY(-8px); box-shadow:0 30px 70px rgba(255,45,135,0.45); }
+.plan-gold { background:linear-gradient(145deg,var(--dark) 0%,var(--dark-mid) 100%); border:2px solid rgba(255,210,63,0.3); }
+.plan-gold:hover { box-shadow:0 24px 60px rgba(255,148,0,0.25); }
+
+.plan-badge { display:inline-block; font-size:0.62rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; padding:0.3rem 1rem; border-radius:100px; margin-bottom:2rem; }
+.plan-platinum .plan-badge { background:var(--light-pink); color:var(--hot-pink); }
+.plan-premium .plan-badge { background:rgba(255,255,255,0.25); color:white; }
+.plan-gold .plan-badge { background:rgba(255,210,63,0.15); color:var(--golden); }
+
+.plan-name { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.06em; margin-bottom:0.3rem; }
+.plan-platinum .plan-name { color:var(--dark); }
+.plan-premium .plan-name { color:white; }
+.plan-gold .plan-name { color:var(--golden); }
+
+.plan-tagline { font-family:'Italiana',serif; font-size:0.95rem; font-style:italic; margin-bottom:2rem; }
+.plan-platinum .plan-tagline { color:var(--text-mid); }
+.plan-premium .plan-tagline { color:rgba(255,255,255,0.8); }
+.plan-gold .plan-tagline { color:rgba(255,248,240,0.65); }
+
+.plan-price-block { padding:1.5rem 0; border-top:1.5px solid; border-bottom:1.5px solid; margin-bottom:2rem; }
+.plan-platinum .plan-price-block { border-color:rgba(255,45,135,0.15); }
+.plan-premium .plan-price-block { border-color:rgba(255,255,255,0.25); }
+.plan-gold .plan-price-block { border-color:rgba(255,210,63,0.2); }
+
+.plan-price { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; line-height:1; }
+.plan-platinum .plan-price { color:var(--hot-pink); }
+.plan-premium .plan-price { color:white; }
+.plan-gold .plan-price { color:var(--golden); }
+
+.plan-per { font-size:0.78rem; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; margin-top:0.3rem; }
+.plan-platinum .plan-per { color:var(--text-mid); }
+.plan-premium .plan-per { color:rgba(255,255,255,0.7); }
+.plan-gold .plan-per { color:rgba(255,248,240,0.55); }
+
+.plan-features { list-style:none; display:flex; flex-direction:column; gap:0.85rem; margin-bottom:2.5rem; }
+.plan-features li { font-size:0.95rem; line-height:1.45; padding-left:1.5rem; position:relative; }
+.plan-features li::before { content:'✦'; position:absolute; left:0; font-size:0.6rem; top:4px; }
+.plan-platinum .plan-features li { color:var(--text-mid); }
+.plan-platinum .plan-features li::before { color:var(--hot-pink); }
+.plan-premium .plan-features li { color:rgba(255,255,255,0.9); }
+.plan-premium .plan-features li::before { color:rgba(255,255,255,0.7); }
+.plan-gold .plan-features li { color:rgba(255,248,240,0.8); }
+.plan-gold .plan-features li::before { color:var(--golden); }
+
+.plan-btn { display:block; width:100%; text-align:center; padding:0.9rem; font-size:0.75rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; border-radius:100px; text-decoration:none; transition:all 0.2s; }
+.plan-platinum .plan-btn { background:linear-gradient(135deg,var(--hot-pink),var(--coral)); color:white; box-shadow:0 4px 20px rgba(255,45,135,0.3); }
+.plan-platinum .plan-btn:hover { box-shadow:0 8px 30px rgba(255,45,135,0.45); transform:translateY(-2px); }
+.plan-premium .plan-btn { background:white; color:var(--hot-pink); font-weight:600; }
+.plan-premium .plan-btn:hover { background:var(--dark); color:white; }
+.plan-gold .plan-btn { background:var(--golden); color:var(--dark); box-shadow:0 4px 20px rgba(255,210,63,0.3); }
+.plan-gold .plan-btn:hover { box-shadow:0 8px 30px rgba(255,210,63,0.5); transform:translateY(-2px); }
+
+.comparison-note { max-width:780px; margin:0 auto; background:white; border-radius:20px; padding:2.5rem 3rem; border:1.5px solid rgba(255,45,135,0.12); }
+.comparison-note h3 { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:0.05em; color:var(--dark); margin-bottom:1.5rem; }
+.tier-compare { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+.tier-col { text-align:center; }
+.tier-dot { width:14px; height:14px; border-radius:50%; margin:0 auto 0.5rem; }
+.tier-col:nth-child(1) .tier-dot { background:var(--blush); }
+.tier-col:nth-child(2) .tier-dot { background:var(--coral); }
+.tier-col:nth-child(3) .tier-dot { background:var(--golden); }
+.tier-name { font-weight:500; font-size:0.85rem; color:var(--dark); margin-bottom:0.3rem; }
+.tier-desc { font-family:'Italiana',serif; font-style:italic; font-size:0.92rem; color:var(--text-mid); line-height:1.5; }
+
+.eco-strip { background:linear-gradient(135deg,var(--hot-pink) 0%,var(--coral) 50%,var(--orange) 100%); padding:4rem 3rem; text-align:center; position:relative; overflow:hidden; margin-top:5rem; }
+.eco-strip::before { content:'♻'; position:absolute; font-size:18rem; opacity:0.06; top:-40px; right:-40px; line-height:1; }
+.eco-strip h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,4vw,3.5rem); letter-spacing:0.04em; color:white; margin-bottom:1rem; }
+.eco-strip p { font-family:'Italiana',serif; font-size:1.2rem; color:rgba(255,255,255,0.88); font-style:italic; max-width:600px; margin:0 auto 2rem; line-height:1.65; }
+.eco-tag { display:inline-flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.2); backdrop-filter:blur(8px); color:white; padding:0.6rem 1.5rem; border-radius:100px; font-size:0.8rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; }
+
+/* ═══ PAGE 3: ABOUT ═══ */
+#about { padding: 6rem 3rem; }
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; max-width:1100px; margin:0 auto 5rem; align-items:start; }
+.about-h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,4vw,3.8rem); letter-spacing:0.03em; line-height:1.05; color:var(--dark); margin-bottom:2rem; }
+.about-h2 .grad { background:linear-gradient(90deg,var(--hot-pink),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.about-body { font-family:'Italiana',serif; font-size:1.1rem; font-style:italic; line-height:1.8; color:var(--text-mid); }
+.about-body p+p { margin-top:1.2rem; }
+.about-right { display:flex; flex-direction:column; gap:1.5rem; }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.stat-card { background:white; border-radius:20px; padding:1.8rem; border:1.5px solid rgba(255,45,135,0.1); text-align:center; }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; background:linear-gradient(135deg,var(--hot-pink),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; display:block; }
+.stat-label { font-size:0.72rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-mid); margin-top:0.4rem; display:block; }
+.founder-card { background:linear-gradient(135deg,var(--dark),var(--dark-mid)); border-radius:20px; padding:2rem; border:1.5px solid rgba(255,45,135,0.25); }
+.founder-quote { font-family:'Italiana',serif; font-size:1.1rem; font-style:italic; color:rgba(255,248,240,0.88); line-height:1.7; margin-bottom:1rem; }
+.founder-name { font-size:0.75rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; background:linear-gradient(90deg,var(--hot-pink),var(--coral)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+.creds-section { background:white; padding:5rem 3rem; }
+.creds-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:1000px; margin:4rem auto 0; }
+.cred-card { padding:2.5rem 2rem; border-radius:24px; border:1.5px solid rgba(255,45,135,0.12); text-align:center; transition:transform 0.2s,box-shadow 0.2s; }
+.cred-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(255,45,135,0.1); }
+.cred-icon { width:64px; height:64px; border-radius:18px; margin:0 auto 1.2rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--hot-pink),var(--coral)); font-size:1.8rem; }
+.cred-title { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.05em; color:var(--dark); margin-bottom:0.6rem; }
+.cred-body { font-family:'Italiana',serif; font-size:1rem; font-style:italic; color:var(--text-mid); line-height:1.6; }
+
+.t-section { padding:6rem 3rem; }
+.t-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:1100px; margin:4rem auto 0; }
+.testimonial { padding:2.5rem; border-radius:24px; background:white; border:1.5px solid rgba(255,45,135,0.1); transition:transform 0.2s; }
+.testimonial:hover { transform:translateY(-4px); }
+.t-stars { color:var(--hot-pink); font-size:0.8rem; letter-spacing:0.1em; margin-bottom:1rem; }
+.t-text { font-family:'Italiana',serif; font-size:1.05rem; font-style:italic; line-height:1.7; color:var(--text-mid); margin-bottom:1.5rem; }
+.t-author { display:flex; align-items:center; gap:0.75rem; }
+.t-avatar { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--hot-pink),var(--coral)); display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:500; color:white; flex-shrink:0; }
+.t-name { font-weight:500; font-size:0.88rem; color:var(--dark); }
+.t-detail { font-size:0.72rem; color:var(--text-mid); }
+
+.cta-final { padding:7rem 3rem; text-align:center; background:linear-gradient(145deg,var(--dark) 0%,var(--dark-mid) 60%,#3D0028 100%); position:relative; overflow:hidden; }
+.cta-final::before { content:''; position:absolute; border-radius:50%; pointer-events:none; width:600px; height:600px; background:radial-gradient(circle,rgba(255,45,135,0.2) 0%,transparent 70%); top:-200px; right:-100px; }
+.cta-final::after { content:''; position:absolute; border-radius:50%; pointer-events:none; width:500px; height:500px; background:radial-gradient(circle,rgba(255,149,0,0.15) 0%,transparent 70%); bottom:-150px; left:-100px; }
+.cta-final h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,5vw,5rem); letter-spacing:0.04em; color:white; line-height:1; margin-bottom:1.2rem; position:relative; z-index:1; }
+.cta-final h2 .grad { background:linear-gradient(90deg,var(--hot-pink),var(--coral),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.cta-final p { font-family:'Italiana',serif; font-size:1.2rem; font-style:italic; color:rgba(255,248,240,0.75); margin-bottom:3rem; position:relative; z-index:1; }
+.cta-final a { position:relative; z-index:1; }
+
+footer { background:var(--dark); padding:3rem 4rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; border-top:1px solid rgba(255,45,135,0.15); }
+.footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.04em; background:linear-gradient(90deg,var(--hot-pink),var(--coral),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-decoration:none; }
+.footer-sub { font-family:'Italiana',serif; font-size:0.85rem; font-style:italic; color:rgba(255,248,240,0.45); margin-top:0.2rem; }
+.footer-links { display:flex; gap:2rem; list-style:none; }
+.footer-links a { font-size:0.72rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,248,240,0.45); text-decoration:none; transition:color 0.2s; }
+.footer-links a:hover { color:var(--hot-pink); }
+.footer-copy { font-size:0.7rem; color:rgba(255,248,240,0.28); }
+</style>
+</head>
+<body>
+
+<div class="blob-bg">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home">Rentacation</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a class="nav-cta" href="#services">Shop Looks</a>
+</nav>
+
+
+<!-- ═══════════════════════════ PAGE 1: LANDING ═══════════════════════════ -->
+
+<section id="home">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Curated Vacation Fashion</div>
+    <h1 class="hero-h1">
+      <span class="plain">Dress Like</span>
+      <span class="grad">The Destination.</span>
+    </h1>
+    <p class="hero-sub">Tell us where you're going. We'll curate three perfectly styled outfits — so you can pack less, look more, and travel better.</p>
+    <div class="hero-actions">
+      <a class="btn-main" href="#services">Explore Packages</a>
+      <a class="btn-ghost" href="#about">Our Story</a>
+    </div>
+  </div>
+</section>
+
+<div class="mv-strip">
+  <div class="mv-card">
+    <span class="mv-label">Vision Statement</span>
+    <div class="mv-heading">Eco Future of Fashion</div>
+    <p class="mv-body">To demonstrate that renting is the eco-friendly future of fashion — reducing waste, extending the life of beautiful clothing, and proving sustainability and style are not opposites.</p>
+  </div>
+  <div class="mv-card">
+    <span class="mv-label">Mission Statement</span>
+    <div class="mv-heading">Less Stress. More Style.</div>
+    <p class="mv-body">To curate fashionable outfits for our customers to reduce stress during their vacation planning, delivering a personalized wardrobe experience from the comfort of home.</p>
+  </div>
+</div>
+
+<div class="how-section">
+  <span class="section-label" style="text-align:center;">The Process</span>
+  <h2 class="section-h2" style="text-align:center; margin-bottom:4rem;">Three Steps To Your <span class="grad">Perfect Look</span></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Tell Us Your Trip</div>
+      <p class="step-body">Fill out our vacation questionnaire — destination, vibe, activities, duration, and your personal style. The more you tell us, the better we dress you.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">We Curate Your Looks</div>
+      <p class="step-body">Our stylists handpick 3 complete outfits matched to your trip, climate, and tier. Each look is styled head-to-toe — no guesswork required.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Pack, Go, Glow</div>
+      <p class="step-body">Receive your curated collection and outfit guide. Show up to your destination looking like you had a personal stylist the whole time.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ PAGE 2: SERVICES ═══════════════════════════ -->
+
+<div class="page-marker"><span>Services &amp; Pricing</span></div>
+
+<section id="services">
+  <div class="services-header">
+    <span class="section-label">Our Packages</span>
+    <h2 class="section-h2">Choose Your <span class="grad">Curation Tier</span></h2>
+    <p>Every package includes 3 fully curated outfits. The higher your tier, the more elevated the brands, the richer the styling, and the more exclusive the pieces.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="plan plan-platinum">
+      <span class="plan-badge">Platinum</span>
+      <h3 class="plan-name">Platinum</h3>
+      <p class="plan-tagline">Stylish, accessible, and perfectly curated</p>
+      <div class="plan-price-block">
+        <div class="plan-price">$120</div>
+        <div class="plan-per">3 outfits · per trip</div>
+      </div>
+      <ul class="plan-features">
+        <li>3 complete, styled outfits</li>
+        <li>Accessible, fashion-forward brands</li>
+        <li>Destination &amp; climate matched</li>
+        <li>Activity-appropriate styling</li>
+        <li>Outfit mood board PDF</li>
+        <li>Delivered within 48 hours</li>
+      </ul>
+      <a class="plan-btn" href="#">Book Platinum</a>
+    </div>
+
+    <div class="plan plan-premium">
+      <span class="plan-badge">✦ Most Popular</span>
+      <h3 class="plan-name">Premium</h3>
+      <p class="plan-tagline">Elevated brands, deeper personalization</p>
+      <div class="plan-price-block">
+        <div class="plan-price">$250</div>
+        <div class="plan-per">3 outfits · per trip</div>
+      </div>
+      <ul class="plan-features">
+        <li>3 premium-brand styled outfits</li>
+        <li>Mid-to-high end designer picks</li>
+        <li>Full style questionnaire review</li>
+        <li>Shopping links for each piece</li>
+        <li>Day-by-day styling guidance</li>
+        <li>1 revision round included</li>
+        <li>Priority 36-hour delivery</li>
+      </ul>
+      <a class="plan-btn" href="#">Book Premium</a>
+    </div>
+
+    <div class="plan plan-gold">
+      <span class="plan-badge">✦ Gold</span>
+      <h3 class="plan-name">Gold</h3>
+      <p class="plan-tagline">Luxury brands, exclusive experience</p>
+      <div class="plan-price-block">
+        <div class="plan-price">$600</div>
+        <div class="plan-per">3 outfits · per trip</div>
+      </div>
+      <ul class="plan-features">
+        <li>3 luxury-brand curated outfits</li>
+        <li>Top-tier designer &amp; boutique labels</li>
+        <li>Personal style consultation call</li>
+        <li>Exclusive &amp; hard-to-find pieces</li>
+        <li>Full concierge styling notes</li>
+        <li>2 revision rounds included</li>
+        <li>24-hour priority delivery</li>
+      </ul>
+      <a class="plan-btn" href="#">Book Gold</a>
+    </div>
+  </div>
+
+  <div class="comparison-note">
+    <h3>What Does "Better Brands" Mean?</h3>
+    <div class="tier-compare">
+      <div class="tier-col">
+        <div class="tier-dot"></div>
+        <div class="tier-name">Platinum</div>
+        <div class="tier-desc">Zara, H&amp;M, ASOS, Free People — trend-forward and accessible</div>
+      </div>
+      <div class="tier-col">
+        <div class="tier-dot"></div>
+        <div class="tier-name">Premium</div>
+        <div class="tier-desc">Reformation, Mango, &amp; Other Stories, Anthropologie</div>
+      </div>
+      <div class="tier-col">
+        <div class="tier-dot"></div>
+        <div class="tier-name">Gold</div>
+        <div class="tier-desc">Jacquemus, Zimmermann, Ulla Johnson, luxury boutiques</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="eco-strip">
+  <h2>Fashion Should Not Cost The Earth</h2>
+  <p>By renting instead of buying fast fashion, each Rentacation customer saves an average of 3–5 garments from landfill per trip. Style and sustainability, together.</p>
+  <span class="eco-tag">♻ Eco-Friendly Fashion Future</span>
+</div>
+
+
+<!-- ═══════════════════════════ PAGE 3: ABOUT ═══════════════════════════ -->
+
+<div class="page-marker"><span>About Us</span></div>
+
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <span class="section-label">Our Story</span>
+      <h2 class="about-h2">Born From a <span class="grad">Suitcase Crisis.</span></h2>
+      <div class="about-body">
+        <p>Rentacation started the way most great ideas do — from a real problem. Our founder spent three hours the night before a dream vacation staring at a closet, overwhelmed, and still ended up overpacking every wrong thing.</p>
+        <p>The lightbulb moment: travelers aren't bad at fashion. They just lack a guide. No one was combining local knowledge, climate research, and real styling expertise to help people get dressed for vacation.</p>
+        <p>We launched in 2022 with a simple premise — fill out a form, get three perfect outfits. The waitlist filled within days. Within six months, we had styled over 300 trips across 30+ destinations. Travelers stopped dreading packing and started loving it.</p>
+        <p>Today we're a team of passionate stylists, avid travelers, and sustainability advocates who believe your wardrobe shouldn't add to your pre-vacation stress — it should be the fun part.</p>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-num">500+</span><span class="stat-label">Trips Styled</span></div>
+        <div class="stat-card"><span class="stat-num">40+</span><span class="stat-label">Destinations</span></div>
+        <div class="stat-card"><span class="stat-num">98%</span><span class="stat-label">Happy Clients</span></div>
+        <div class="stat-card"><span class="stat-num">2022</span><span class="stat-label">Founded</span></div>
+      </div>
+      <div class="founder-card">
+        <p class="founder-quote">"We started this because we genuinely believe vacation should feel like vacation from the moment you open your suitcase. No stress. Just style, joy, and the places you love."</p>
+        <span class="founder-name">— Rentacation Founding Team</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="creds-section">
+  <div style="text-align:center;">
+    <span class="section-label" style="display:block; text-align:center;">Why Trust Us</span>
+    <h2 class="section-h2" style="text-align:center; margin-bottom:0;">The Expertise Behind <span class="grad">Every Look</span></h2>
+  </div>
+  <div class="creds-grid">
+    <div class="cred-card">
+      <div class="cred-icon">✦</div>
+      <div class="cred-title">Fashion-Trained Stylists</div>
+      <p class="cred-body">Every curation is handled by a stylist with professional training in editorial, retail, and personal styling — not just anyone with a good eye.</p>
+    </div>
+    <div class="cred-card">
+      <div class="cred-icon">🌍</div>
+      <div class="cred-title">Real Travel Knowledge</div>
+      <p class="cred-body">We've traveled to — and dressed people for — over 40 countries. We know what works in Marrakech versus Milan, Bali versus Brooklyn.</p>
+    </div>
+    <div class="cred-card">
+      <div class="cred-icon">♻</div>
+      <div class="cred-title">Sustainability Focused</div>
+      <p class="cred-body">We source thoughtfully, prioritize rental-friendly pieces, and champion a fashion future that's beautiful for people and for the planet.</p>
+    </div>
+  </div>
+</div>
+
+<div class="t-section">
+  <div style="text-align:center;">
+    <span class="section-label" style="display:block; text-align:center;">Client Love</span>
+    <h2 class="section-h2" style="text-align:center; margin-bottom:0;">What Our Travelers <span class="grad">Say</span></h2>
+  </div>
+  <div class="t-grid">
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"Used Rentacation before Morocco and I've never felt so prepared. Every outfit matched the culture AND the heat. People were asking where I got my looks the whole trip."</p>
+      <div class="t-author">
+        <div class="t-avatar">JL</div>
+        <div><div class="t-name">Jamie L.</div><div class="t-detail">Morocco · Gold Package</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"As someone who hates packing, this is honestly life-changing. My 10-day Italy wardrobe mixed and matched so well — I looked put-together every single day with half the luggage."</p>
+      <div class="t-author">
+        <div class="t-avatar">KR</div>
+        <div><div class="t-name">Kezia R.</div><div class="t-detail">Italy · Premium Package</div></div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"The eco mission sold me first, the styling kept me coming back. I've used Rentacation for three trips now. It's become a non-negotiable part of how I travel."</p>
+      <div class="t-author">
+        <div class="t-avatar">AM</div>
+        <div><div class="t-name">Amara M.</div><div class="t-detail">Bali · Platinum Package</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-final">
+  <h2>Ready To Travel<br><span class="grad">In Full Color?</span></h2>
+  <p>Tell us your destination. We'll handle the wardrobe.</p>
+  <a class="btn-main" href="#services" style="font-size:0.85rem; padding:1.1rem 3rem;">Start Your Style Questionnaire</a>
+</div>
+
+<footer>
+  <div>
+    <a class="footer-logo" href="#home">Rentacation</a>
+    <div class="footer-sub">Curated Stays. Conscious Choices.</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Rentacation. All rights reserved.</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = e.target.classList.contains('plan-premium')
+        ? 'scale(1.03) translateY(0)' : 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.step, .plan, .cred-card, .testimonial, .stat-card, .mv-card').forEach((el, i) => {
+  el.style.opacity = '0';
+  el.style.transform = el.classList.contains('plan-premium')
+    ? 'scale(1.03) translateY(28px)' : 'translateY(28px)';
+  el.style.transition = `opacity 0.55s ease ${i * 0.07}s, transform 0.55s ease ${i * 0.07}s`;
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
